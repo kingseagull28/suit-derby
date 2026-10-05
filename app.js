@@ -685,8 +685,12 @@
     if (!slot) return;
     const prevCount = prev && prev.race ? prev.race.draws.length : -1;
 
-    if (last && (draws.length !== prevCount || !slot.querySelector('.pcard:not(.back)'))) {
-      slot.replaceChildren(cardEl(last, draws.length !== prevCount ? 'flip' : ''));
+    // The big card always shows the latest draw. It tracks which draw it is
+    // showing, so it updates on every new card no matter how the update arrived.
+    const shown = Number(slot.dataset.shown || 0);
+    if (last && shown !== draws.length) {
+      slot.dataset.shown = String(draws.length);
+      slot.replaceChildren(cardEl(last, 'flip'));
       $('drawMsg').textContent = `${SYM[last.suit]} ${NAME[last.suit]} moves forward!`;
       $('drawMsg').style.color = last.suit === 'S' ? '' : COLOR[last.suit];
     }

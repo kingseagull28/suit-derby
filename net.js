@@ -107,7 +107,9 @@ window.Net = (() => {
   }
 
   function deliver(pid, state) {
-    if (pid === myPid) { setTimeout(() => fire('state', state), 0); return; }
+    // The host's own screen gets a copy, exactly like remote players do. Handing
+    // over the live object would let the engine change it after the screen saw it.
+    if (pid === myPid) { const copy = JSON.parse(JSON.stringify(state)); setTimeout(() => fire('state', copy), 0); return; }
     const c = conns.get(pid);
     if (c && c.open) { try { c.send({ t: 'state', s: state }); } catch {} }
   }
