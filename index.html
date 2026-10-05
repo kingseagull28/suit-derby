@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Suit Derby</title>
+  <meta name="description" content="A card-driven horse race for friends. Play credits only, no real money." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏇</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Barlow+Semi+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Connection problems -->
+  <div id="conn" class="conn" hidden>Lost the host. Reconnecting…</div>
+
+  <!-- ============ START SCREEN ============ -->
+  <main id="landing" class="landing" hidden>
+    <div class="landing-inner">
+      <h1 class="brand-big" aria-label="Suit Derby">
+        <span class="brand-suits"><b class="s-H">♥</b><b class="s-D">♦</b><b class="s-C">♣</b><b class="s-S">♠</b></span>
+        Suit Derby
+      </h1>
+      <p class="lede">Four horses, one deck of cards. Every card drawn moves its suit one space. First to the finish wins.</p>
+      <p class="play-note">Play credits only. Everyone starts with 100. No real money, ever.</p>
+
+      <div class="landing-form">
+        <label class="field">
+          <span>Your display name</span>
+          <input id="nameInput" maxlength="18" autocomplete="nickname" placeholder="e.g. Lucky Lou" />
+        </label>
+        <button id="createBtn" class="btn btn-brass btn-lg">Create a room</button>
+        <div class="or"><span>or join a friend</span></div>
+        <div class="join-row">
+          <input id="codeInput" class="code-input" maxlength="5" autocapitalize="characters" autocomplete="off" placeholder="Room code" aria-label="Room code" />
+          <button id="joinBtn" class="btn btn-ghost btn-lg">Join</button>
+        </div>
+        <p id="landingStatus" class="status" aria-live="polite"></p>
+        <p id="landingError" class="error" role="alert"></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ GAME ROOM ============ -->
+  <div id="game" class="game" hidden>
+    <header class="topbar">
+      <div class="brand"><span class="brand-suits" aria-hidden="true"><b class="s-H">♥</b><b class="s-D">♦</b><b class="s-C">♣</b><b class="s-S">♠</b></span> <span class="brand-word">Suit Derby</span></div>
+      <button id="codeChip" class="code-chip" title="Copy invite link">Room <span id="roomCode" class="tote">-----</span></button>
+      <div class="balance" aria-live="polite">
+        <span class="balance-label">Balance</span>
+        <span id="balance" class="tote tote-amber">100</span>
+        <span class="balance-unit">play credits</span>
+        <span id="inPlay" class="in-play"></span>
+      </div>
+      <div class="top-actions">
+        <button id="muteBtn" class="icon-btn" aria-label="Mute sounds" title="Sound on/off">🔊</button>
+        <button id="leaveBtn" class="btn btn-quiet leave-btn">Leave</button>
+      </div>
+    </header>
+
+    <!-- Tote board announcer -->
+    <div class="tote-strip">
+      <div id="announce" class="announce" aria-live="polite">Waiting for players…</div>
+      <div id="timer" class="timer tote" hidden></div>
+    </div>
+
+    <!-- The race track -->
+    <section class="track-wrap" aria-label="Race track">
+      <div id="track" class="track"></div>
+    </section>
+
+    <div class="below">
+      <section id="panel" class="panel" aria-live="polite"></section>
+      <aside class="side">
+        <div class="side-block">
+          <h2>In the room</h2>
+          <ul id="players" class="players"></ul>
+        </div>
+        <div class="side-block">
+          <h2>Your recent races</h2>
+          <ul id="history" class="history"></ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Countdown and winner overlays -->
+  <div id="overlay" class="overlay" hidden><div id="overlayText" class="overlay-text"></div></div>
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="vendor/peerjs.min.js"></script>
+  <script src="engine.js"></script>
+  <script src="net.js"></script>
+  <script src="sound.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
